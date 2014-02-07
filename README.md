@@ -1,23 +1,21 @@
 ## go-sh
 [![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/shxsun/go-sh)
 
-So what is go-sh. Sometimes I need to write some shell scripts, but shell scripts is not good at cross platform, but golang is good at that. Is there a good way to use golang to write scripts like shell? Use go-sh we can do it now.
+So what is go-sh. Sometimes we need to write some shell scripts, but shell scripts is not good at cross platform, but golang is good at that. Is there a good way to use golang to write scripts like shell? Use go-sh we can do it now.
 
 go-sh support some shell futures.
 
-* Session
+* shell session
 * `export`: env
 * `alias`: like alias ll='ls -l'
 * `cd`: remember current dir
 * pipe
 
-Example is very important. I will show you how to use it.
+Example is always important. I will show you how to use it.
 
-run `echo hi world` in dir(/)
 
-	sh.Capture("echo", []string{"hi", "world"}, sh.Dir("/"))
 
-create a new Session
+First give you a full example, I will explain every command below.
 
 	session := sh.NewSession()
 	session.Env["PATH"] = "/usr/bin:/bin"
@@ -29,12 +27,16 @@ create a new Session
 	if err != nil {
 		log.Fatal(err)
 	}
-	ret, err := session.Capture("pwd", sh.Dir("/home"))
+	ret, err := session.Capture("pwd", sh.Dir("/home")) # wraper of session.Call
 	if err != nil {
 		log.Fatal(err)
 	}
 	# ret is "/home\n"
 	fmt.Println(ret)
+
+create a new Session
+
+	session := sh.NewSession()
 
 use alias like this
 
@@ -50,7 +52,6 @@ set current directory
 
 empty args filled in Call will call last command
 
-	session.Exec("echo", []string{"hi"})
 	session.Call() # will call echo hi again
 
 pipe is also supported
