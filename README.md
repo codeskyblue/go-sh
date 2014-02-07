@@ -73,7 +73,7 @@ convert to golang, will be
 	s := sh.NewSession()
 	s.Env["PATH"] = "/usr/bin:/bin"
 	s.Alias("ll", "ls", "-l")
-	s.Command("ll").Command("awk", []string{"'{print $1}'"}).Command("grep", []string{"^-rw"}).Run()
+	s.Command("ll").Command("awk", []string{"{print $1}"}).Command("grep", []string{"^-rw"}).Run()
 
 ### contribute
 If you love this project, star it which will encourage the coder. pull requests are welcomed, if you want to add some new fetures.
