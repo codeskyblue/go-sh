@@ -1,4 +1,5 @@
 ## go-sh
+[![Build Status](https://drone.io/github.com/shxsun/go-sh/status.png)](https://drone.io/github.com/shxsun/go-sh/latest)
 [![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/shxsun/go-sh)
 
 So what is go-sh. Sometimes we need to write some shell scripts, but shell scripts is not good at cross platform, but golang is good at that. Is there a good way to use golang to write scripts like shell? Use go-sh we can do it now.
