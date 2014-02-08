@@ -85,9 +85,23 @@ func TestPipeCommand(t *testing.T) {
 	c2.Wait()
 }
 
+/*
+	#!/bin/bash -
+	#
+	export PATH=/usr/bin:/bin
+	alias ll='ls -l'
+	cd /usr
+	if test -d "local"
+	then
+		ll local | awk '{print $1, $NF}'
+	fi
+*/
 func TestExample(t *testing.T) {
 	s := NewSession()
 	s.Env["PATH"] = "/usr/bin:/bin"
+	s.Set(Dir("/usr"))
 	s.Alias("ll", "ls", "-l")
-	s.Command("ll").Command("awk", []string{"{print $1}"}).Command("grep", []string{"^-rw"}).Run()
+	if s.Test("d", "local") {
+		s.Command("ll", []string{"local"}).Command("awk", []string{"{print $1, $NF}"}).Run()
+	}
 }

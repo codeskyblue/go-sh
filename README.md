@@ -11,6 +11,7 @@ go-sh support some shell futures.
 * `alias`: like alias ll='ls -l'
 * `cd`: remember current dir
 * pipe
+* `test`: this is shell build command, very usefull(support -d and -f)
 
 Example is always important. I will show you how to use it.
 
@@ -61,20 +62,32 @@ pipe is also supported
 	// output should be "world"
 	session.Run()
 
+test, the build in command support
+
+	session.Test("d", "dir") // test dir
+	session.Test("f", "file) // test regular file
+
 with `Alias Env Set Call Capture Command` a shell scripts can be easily converted into golang program. below is a shell script.
 
 	#!/bin/bash -
 	#
 	export PATH=/usr/bin:/bin
 	alias ll='ls -l'
-	ll | awk '{print $1}' | grep "^-rw"
+	cd /usr
+	if test -d "local"
+	then
+		ll local | awk '{print $1, $NF}'
+	fi
 
 convert to golang, will be
 
 	s := sh.NewSession()
 	s.Env["PATH"] = "/usr/bin:/bin"
+	s.Set(sh.Dir("/usr"))
 	s.Alias("ll", "ls", "-l")
-	s.Command("ll").Command("awk", []string{"{print $1}"}).Command("grep", []string{"^-rw"}).Run()
+	if s.Test("d", "local") {
+		s.Command("ll", []string{"local"}).Command("awk", []string{"{print $1, $NF}"}).Run()
+	}
 
 ### contribute
 If you love this project, star it which will encourage the coder. pull requests are welcomed, if you want to add some new fetures.
