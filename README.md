@@ -92,5 +92,7 @@ convert to golang, will be
 ### contribute
 If you love this project, star it which will encourage the coder. pull requests are welcomed, if you want to add some new fetures.
 
+support the author: [alipay](https://me.alipay.com/goskyblue)
+
 ### thanks
 this project is based on <http://github.com/codegangsta/inject>. thanks for the author.
