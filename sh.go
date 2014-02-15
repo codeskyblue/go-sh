@@ -41,8 +41,9 @@ type Session struct {
 }
 
 func NewSession(a ...interface{}) *Session {
-	env := map[string]string{
-		"PATH": "/bin:/usr/bin:/usr/local/bin",
+	env := make(map[string]string)
+	for _, key := range []string{"PATH"} {
+		env[key] = os.Getenv(key)
 	}
 	s := &Session{
 		inj:    inject.New(),
