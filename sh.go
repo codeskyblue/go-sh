@@ -115,6 +115,20 @@ func (s *Session) appendCmd(cmd string, args []string, cwd Dir) {
 	for k, v := range s.Env {
 		envs = append(envs, k+"="+v)
 	}
+	// add system default env
+	for _, line := range os.Environ() {
+		exists := false
+		for k, _ := range s.Env {
+			if strings.HasPrefix(line, k) {
+				exists = true
+				break
+			}
+		}
+		if !exists {
+			envs = append(envs, line)
+		}
+	}
+
 	v, ok := s.alias[cmd]
 	if ok {
 		cmd = v[0]

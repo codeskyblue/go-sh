@@ -4,6 +4,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"runtime"
 	"testing"
 )
 
@@ -31,6 +32,10 @@ func TestCapture(t *testing.T) {
 }
 
 func TestSession(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Log("ignore test on windows")
+		return
+	}
 	session := NewSession("pwd")
 	session.Set(Dir("/"))
 	err := session.Call()
@@ -57,11 +62,11 @@ func TestPipe(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	out, err := s.Command("echo", []string{"-n", "hello"}).Output()
+	out, err := s.Command("echo", []string{"hello"}).Output()
 	if err != nil {
 		t.Error(err)
 	}
-	if out != "hello" {
+	if out != "hello\n" {
 		t.Error("capture wrong output:", out)
 	}
 	s.Command("echo", []string{"hello\tworld"}).Command("cut", []string{"-f2"}).Run()
