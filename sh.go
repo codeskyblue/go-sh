@@ -2,6 +2,7 @@ package sh
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -38,6 +39,13 @@ type Session struct {
 	Env     map[string]string
 	Stdout  io.Writer
 	Stderr  io.Writer
+	ShowCMD bool // enable for debug
+}
+
+func (s *Session) writePrompt(args ...interface{}) {
+	var ps1 = fmt.Sprintf("[golang-sh]$")
+	args = append([]interface{}{ps1}, args...)
+	fmt.Fprintln(s.Stderr, args...)
 }
 
 func NewSession(a ...interface{}) *Session {

@@ -24,6 +24,7 @@ First give you a full example, I will explain every command below.
 	session.Stdout = os.Stdout
 	session.Stderr = os.Stderr
 	session.Alias("ll", "ls", "-l")
+	session.ShowCMD = true // enable for debug
 	var err error
 	err = session.Call("ll", []string{"/"})
 	if err != nil {

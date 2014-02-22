@@ -38,6 +38,7 @@ func TestSession(t *testing.T) {
 	}
 	session := NewSession("pwd")
 	session.Set(Dir("/"))
+	session.ShowCMD = true
 	err := session.Call()
 	if err != nil {
 		t.Error(err)
@@ -53,6 +54,7 @@ func TestSession(t *testing.T) {
 
 func TestPipe(t *testing.T) {
 	s := NewSession()
+	s.ShowCMD = true
 	s.Call("echo", []string{"hello"})
 	err := s.Command("echo", []string{"hi"}).Command("cat", []string{"-n"}).Start()
 	if err != nil {
@@ -98,15 +100,16 @@ func TestPipeCommand(t *testing.T) {
 	cd /usr
 	if test -d "local"
 	then
-		ll local | awk '{print $1, $NF}'
+		ll local | awk '{print $1, $NF}' | grep bin
 	fi
 */
 func TestExample(t *testing.T) {
 	s := NewSession()
+	s.ShowCMD = true
 	s.Env["PATH"] = "/usr/bin:/bin"
 	s.Set(Dir("/usr"))
 	s.Alias("ll", "ls", "-l")
 	if s.Test("d", "local") {
-		s.Command("ll", []string{"local"}).Command("awk", []string{"{print $1, $NF}"}).Run()
+		s.Command("ll", []string{"local"}).Command("awk", []string{"{print $1, $NF}"}).Command("grep", []string{"bin"}).Run()
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io"
 	"os"
+	"strings"
 )
 
 func (s *Session) Start() (err error) {
@@ -11,6 +12,13 @@ func (s *Session) Start() (err error) {
 	var rd *io.PipeReader
 	var wr *io.PipeWriter
 	var length = len(s.cmds)
+	if s.ShowCMD {
+		var cmds = make([]string, 0, 4)
+		for _, cmd := range s.cmds {
+			cmds = append(cmds, strings.Join(cmd.Args, " "))
+		}
+		s.writePrompt(strings.Join(cmds, " | "))
+	}
 	for index, cmd := range s.cmds {
 		if index != 0 {
 			cmd.Stdin = rd
