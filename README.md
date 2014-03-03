@@ -53,10 +53,6 @@ set current directory
 
 	session.Set(sh.Dir("/")) # like cd /
 
-empty args filled in Call will call last command
-
-	session.Call() # will call echo hi again
-
 pipe is also supported
 
 	session.Command("echo", "hello\tworld").Command("cut", "-f2")
