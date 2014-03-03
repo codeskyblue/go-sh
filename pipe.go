@@ -2,10 +2,21 @@ package sh
 
 import (
 	"bytes"
+	"encoding/json"
 	"io"
 	"os"
 	"strings"
 )
+
+// unmarshal shell output to decode json
+func (s *Session) UnmarshalJSON(data interface{}) (err error) {
+	bufrw := bytes.NewBuffer(nil)
+	s.Stdout = bufrw
+	if err = s.Run(); err != nil {
+		return
+	}
+	return json.NewDecoder(bufrw).Decode(data)
+}
 
 func (s *Session) Start() (err error) {
 	s.started = true
