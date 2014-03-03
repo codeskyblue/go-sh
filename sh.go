@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"reflect"
 	"strings"
 
 	"github.com/codegangsta/inject"
@@ -75,10 +76,41 @@ func (s *Session) Alias(alias, cmd string, args ...string) {
 	s.alias[alias] = v
 }
 
+func isInInj(inj inject.Injector, vType reflect.Type, v interface{}) bool {
+	return inj.Get(vType).Kind() != reflect.Invalid && reflect.TypeOf(v).Kind() == vType.Kind()
+}
+
 func (s *Session) Command(a ...interface{}) *Session {
-	for _, v := range a {
+	var cmd string
+	var first = true
+	var args = make([]string, 0)
+	var sType = reflect.TypeOf("")
+
+	// extract arg0, args ...
+	var sepIndex int = -1
+	for i, v := range a {
+		sepIndex = i
+		if reflect.TypeOf(v) == sType {
+			if first {
+				first = false
+				cmd = v.(string)
+				continue
+			}
+			args = append(args, v.(string))
+			continue
+		}
+		break
+	}
+
+	//fmt.Println("left=(", sepIndex, a, "args=", a[sepIndex:])
+	//fmt.Println("cmd=", cmd)
+
+	// extract sh.Dir ...
+	s.inj.Map(args)
+	for _, v := range a[sepIndex:] { // args can be replaced here
 		s.inj.Map(v)
 	}
+	s.inj.Map(cmd)
 	s.inj.Invoke(s.appendCmd)
 	return s
 }

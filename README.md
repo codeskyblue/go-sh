@@ -26,7 +26,7 @@ First give you a full example, I will explain every command below.
 	session.Alias("ll", "ls", "-l")
 	session.ShowCMD = true // enable for debug
 	var err error
-	err = session.Call("ll", []string{"/"})
+	err = session.Call("ll", "/")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,7 +59,7 @@ empty args filled in Call will call last command
 
 pipe is also supported
 
-	session.Command("echo", []string{"hello\tworld"}).Command("cut", []string{"-f2"})
+	session.Command("echo", "hello\tworld").Command("cut", "-f2")
 	// output should be "world"
 	session.Run()
 
@@ -87,7 +87,7 @@ convert to golang, will be
 	s.Set(sh.Dir("/usr"))
 	s.Alias("ll", "ls", "-l")
 	if s.Test("d", "local") {
-		s.Command("ll", []string{"local"}).Command("awk", []string{"{print $1, $NF}"}).Run()
+		s.Command("ll", "local").Command("awk", "{print $1, $NF}").Run()
 	}
 
 ### contribute

@@ -1,9 +1,6 @@
 package sh
 
 import (
-	"io"
-	"os"
-	"os/exec"
 	"runtime"
 	"testing"
 )
@@ -36,60 +33,20 @@ func TestSession(t *testing.T) {
 		t.Log("ignore test on windows")
 		return
 	}
-	session := NewSession("pwd")
+	session := NewSession()
 	session.Set(Dir("/"))
 	session.ShowCMD = true
-	err := session.Call()
+	err := session.Call("pwd")
 	if err != nil {
 		t.Error(err)
 	}
-	ret, err := session.Capture()
+	ret, err := session.Capture("pwd")
 	if err != nil {
 		t.Error(err)
 	}
 	if ret.Trim() != "/" {
 		t.Errorf("expect /, but got %s", ret.Trim())
 	}
-}
-
-func TestPipe(t *testing.T) {
-	s := NewSession()
-	s.ShowCMD = true
-	s.Call("echo", []string{"hello"})
-	err := s.Command("echo", []string{"hi"}).Command("cat", []string{"-n"}).Start()
-	if err != nil {
-		t.Error(err)
-	}
-	err = s.Wait()
-	if err != nil {
-		t.Error(err)
-	}
-	out, err := s.Command("echo", []string{"hello"}).Output()
-	if err != nil {
-		t.Error(err)
-	}
-	if out != "hello\n" {
-		t.Error("capture wrong output:", out)
-	}
-	s.Command("echo", []string{"hello\tworld"}).Command("cut", []string{"-f2"}).Run()
-}
-
-func TestPipeCommand(t *testing.T) {
-	c1 := exec.Command("echo", "good")
-	rd, wr := io.Pipe()
-	c1.Stdout = wr
-	c2 := exec.Command("cat", "-n")
-	c2.Stdout = os.Stdout
-	c2.Stdin = rd
-	c1.Start()
-	c2.Start()
-
-	c1.Wait()
-	wc, ok := c1.Stdout.(io.WriteCloser)
-	if ok {
-		wc.Close()
-	}
-	c2.Wait()
 }
 
 /*
@@ -109,7 +66,9 @@ func TestExample(t *testing.T) {
 	s.Env["PATH"] = "/usr/bin:/bin"
 	s.Set(Dir("/usr"))
 	s.Alias("ll", "ls", "-l")
+	//s.Stdout = nil
 	if s.Test("d", "local") {
-		s.Command("ll", []string{"local"}).Command("awk", []string{"{print $1, $NF}"}).Command("grep", []string{"bin"}).Run()
+		//s.Command("ll", []string{"local"}).Command("awk", []string{"{print $1, $NF}"}).Command("grep", []string{"bin"}).Run()
+		s.Command("ll", "local").Command("awk", "{print $1, $NF}").Command("grep", "bin").Run()
 	}
 }
