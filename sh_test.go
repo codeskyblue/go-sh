@@ -17,6 +17,14 @@ func TestAlias(t *testing.T) {
 	}
 }
 
+func TestCommand1(t *testing.T) {
+	var err error
+	err = Command("echo", "hello123").Run()
+	if err != nil {
+		t.Error(err)
+	}
+}
+
 func TestCapture(t *testing.T) {
 	r, err := Capture("echo", []string{"hello"})
 	if err != nil {
@@ -34,13 +42,12 @@ func TestSession(t *testing.T) {
 		return
 	}
 	session := NewSession()
-	session.Set(Dir("/"))
 	session.ShowCMD = true
 	err := session.Call("pwd")
 	if err != nil {
 		t.Error(err)
 	}
-	ret, err := session.Capture("pwd")
+	ret, err := session.SetDir("/").Capture("pwd")
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,7 +71,7 @@ func TestExample(t *testing.T) {
 	s := NewSession()
 	s.ShowCMD = true
 	s.Env["PATH"] = "/usr/bin:/bin"
-	s.Set(Dir("/usr"))
+	s.SetDir("/usr")
 	s.Alias("ll", "ls", "-l")
 	//s.Stdout = nil
 	if s.Test("d", "local") {

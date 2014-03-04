@@ -70,7 +70,7 @@ func (s *Session) Run() (err error) {
 	return s.Wait()
 }
 
-func (s *Session) Output() (out string, err error) {
+func (s *Session) Output() (out []byte, err error) {
 	oldout := s.Stdout
 	defer func() {
 		s.Stdout = oldout
@@ -78,6 +78,6 @@ func (s *Session) Output() (out string, err error) {
 	stdout := bytes.NewBuffer(nil)
 	s.Stdout = stdout
 	err = s.Run()
-	out = string(stdout.Bytes())
+	out = stdout.Bytes()
 	return
 }

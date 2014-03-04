@@ -36,7 +36,7 @@ func TestPipe(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if out != "hello\n" {
+	if string(out) != "hello\n" {
 		t.Error("capture wrong output:", out)
 	}
 	s.Command("echo", []string{"hello\tworld"}).Command("cut", []string{"-f2"}).Run()

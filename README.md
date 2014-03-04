@@ -2,89 +2,55 @@
 [![Build Status](https://drone.io/github.com/shxsun/go-sh/status.png)](https://drone.io/github.com/shxsun/go-sh/latest)
 [![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/shxsun/go-sh)
 
-So what is go-sh. Sometimes we need to write some shell scripts, but shell scripts is not good at cross platform, but golang is good at that. Is there a good way to use golang to write scripts like shell? Use go-sh we can do it now.
+*for the better grow of this package. some change may influence the old users, the old-code has tag: v0.1*
 
-go-sh support some shell futures.
+install: `go get github.com/shxsun/go-sh`
 
-* shell session
-* `export`: env
-* `alias`: like alias ll='ls -l'
-* `cd`: remember current dir
-* pipe
-* `test`: this is shell build command, very usefull(support -d and -f)
+I like os/exec, so this golang package go-sh, is very like os/exec. But it really have some better experience than os/exec.
+
+There are some features, listed bellow.
+
+* keep the variable environment (like export)
+* alias support (like alias in shell)
+* remember current dir
+* pipe command
+* shell build-in command test
 
 Example is always important. I will show you how to use it.
 
+	sh: echo hello
+	go: sh.Command("echo", "hello").Run()
 
+	sh: export BUILD_ID=123
+	go: s = sh.NewSession().SetEnv("BUILD_ID", "123")
 
-First give you a full example, I will explain every command below.
+	sh: alias ll='ls -l'
+	go: s = sh.NewSession().Alias('ll', 'ls', '-l')
+
+	sh: (cd /; pwd)
+	go: sh.Command("pwd", sh.Dir("/")).Run()
+
+	sh: test -d data || mkdir data
+	go: sh.Test("dir", "data") || sh.Command("mkdir", "data").Run() != nil
+	
+	sh: echo hello world | awk '{print $1}'
+	go: sh.Command("echo", "hello", "world").Command("awk", "{print $1}").Run()
+
+	sh: msg=$(echo hi)
+	go: msg, err := sh.Command("echo", "hi").Output()
+
+If you need to keep env and dir, it is better to create a session
 
 	session := sh.NewSession()
-	session.Env["PATH"] = "/usr/bin:/bin"
-	session.Stdout = os.Stdout
-	session.Stderr = os.Stderr
-	session.Alias("ll", "ls", "-l")
-	session.ShowCMD = true // enable for debug
-	var err error
-	err = session.Call("ll", "/")
-	if err != nil {
-		log.Fatal(err)
-	}
-	ret, err := session.Capture("pwd", sh.Dir("/home")) # wraper of session.Call
-	if err != nil {
-		log.Fatal(err)
-	}
-	# ret is "/home\n"
-	fmt.Println(ret)
+	session.SetEnv("BUILD_ID", "123")
+	session.SetDir("/")
+	# then call cmd
+	session.Command("echo", "hello").Run()
+	# set ShowCMD to true for easily debug
+	session.ShowCmd = true
 
-create a new Session
-
-	session := sh.NewSession()
-
-use alias like this
-
-	session.Alias("ll", "ls", "-l") # like alias ll='ls -l'
-
-set current env like this
-
-	session.Env["BUILD_ID"] = "123" # like export BUILD_ID=123
-
-set current directory
-
-	session.Set(sh.Dir("/")) # like cd /
-
-pipe is also supported
-
-	session.Command("echo", "hello\tworld").Command("cut", "-f2")
-	// output should be "world"
-	session.Run()
-
-test, the build in command support
-
-	session.Test("d", "dir") // test dir
-	session.Test("f", "file) // test regular file
-
-with `Alias Env Set Call Capture Command` a shell scripts can be easily converted into golang program. below is a shell script.
-
-	#!/bin/bash -
-	#
-	export PATH=/usr/bin:/bin
-	alias ll='ls -l'
-	cd /usr
-	if test -d "local"
-	then
-		ll local | awk '{print $1, $NF}'
-	fi
-
-convert to golang, will be
-
-	s := sh.NewSession()
-	s.Env["PATH"] = "/usr/bin:/bin"
-	s.Set(sh.Dir("/usr"))
-	s.Alias("ll", "ls", "-l")
-	if s.Test("d", "local") {
-		s.Command("ll", "local").Command("awk", "{print $1, $NF}").Run()
-	}
+for more information, it better to see docs.
+[![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/shxsun/go-sh)
 
 ### contribute
 If you love this project, star it which will encourage the coder. pull requests are welcomed, if you want to add some new fetures.
@@ -93,3 +59,6 @@ support the author: [alipay](https://me.alipay.com/goskyblue)
 
 ### thanks
 this project is based on <http://github.com/codegangsta/inject>. thanks for the author.
+
+# the reason to use golang shell
+So what is go-sh. Sometimes we need to write some shell scripts, but shell scripts is not good at cross platform, but golang is good at that. Is there a good way to use golang to write scripts like shell? Use go-sh we can do it now.

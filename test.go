@@ -3,7 +3,6 @@ package sh
 import (
 	"os"
 	"path/filepath"
-	"reflect"
 )
 
 func filetest(name string, modemask os.FileMode) (match bool, err error) {
@@ -16,7 +15,7 @@ func filetest(name string, modemask os.FileMode) (match bool, err error) {
 }
 
 func (s *Session) pwd() string {
-	dir := s.inj.Get(reflect.TypeOf(Dir(""))).String()
+	dir := string(s.dir)
 	if dir == "" {
 		dir, _ = os.Getwd()
 	}
@@ -27,19 +26,31 @@ func (s *Session) abspath(name string) string {
 	return filepath.Join(s.pwd(), name)
 }
 
+func init() {
+	//log.SetFlags(log.Lshortfile | log.LstdFlags)
+}
+
+// expression can be dir, file, link
 func (s *Session) Test(expression string, argument string) bool {
 	var err error
 	var fi os.FileInfo
 	fi, err = os.Stat(s.abspath(argument))
 	switch expression {
-	case "d":
+	case "d", "dir":
 		return err == nil && fi.IsDir()
-	case "f":
+	case "f", "file":
 		return err == nil && fi.Mode().IsRegular()
 		// case "x":
 		//	 return err == nil && fi.Mode()&os.ModeExclusive != 0
 		//case "h", "L":
 		//	return err == nil && fi.Mode()&os.ModeSymlink != 0
+	case "link":
+		return err == nil && fi.Mode()&os.ModeSymlink != 0
 	}
 	return false
+}
+
+func Test(exp string, arg string) bool {
+	s := NewSession()
+	return s.Test(exp, arg)
 }
