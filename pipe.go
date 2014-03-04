@@ -3,6 +3,7 @@ package sh
 import (
 	"bytes"
 	"encoding/json"
+	"encoding/xml"
 	"io"
 	"os"
 	"strings"
@@ -18,6 +19,17 @@ func (s *Session) UnmarshalJSON(data interface{}) (err error) {
 	return json.NewDecoder(bufrw).Decode(data)
 }
 
+// unmarshal command output into xml
+func (s *Session) UnmarshalXML(data interface{}) (err error) {
+	bufrw := bytes.NewBuffer(nil)
+	s.Stdout = bufrw
+	if err = s.Run(); err != nil {
+		return
+	}
+	return xml.NewDecoder(bufrw).Decode(data)
+}
+
+// start command
 func (s *Session) Start() (err error) {
 	s.started = true
 	var rd *io.PipeReader

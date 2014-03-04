@@ -1,6 +1,7 @@
 package sh
 
 import (
+	"encoding/xml"
 	"io"
 	"os"
 	"os/exec"
@@ -17,6 +18,20 @@ func TestUnmarshalJSON(t *testing.T) {
 	}
 	if a != 1 {
 		t.Errorf("expect a tobe 1, but got %d", a)
+	}
+}
+
+func TestUnmarshalXML(t *testing.T) {
+	xmlSample := `<?xml version="1.0" encoding="utf-8"?>
+<server version="1" />`
+	type server struct {
+		XMLName xml.Name `xml:"server"`
+		Version string   `xml:"version,attr"`
+	}
+	data := &server{}
+	s.Command("echo", xmlSample).UnmarshalXML(data)
+	if data.Version != "1" {
+		t.Error(data)
 	}
 }
 
