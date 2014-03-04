@@ -31,9 +31,7 @@ Example is always important. I will show you how to use it.
 	go: sh.Command("pwd", sh.Dir("/")).Run()
 
 	sh: test -d data || mkdir data
-	go: if ! sh.Test("dir", "data") {
-			sh.Command("mkdir", "data").Run()
-		}
+	go: if ! sh.Test("dir", "data") { sh.Command("mkdir", "data").Run() }
 	
 	sh: echo hello world | awk '{print $1}'
 	go: sh.Command("echo", "hello", "world").Command("awk", "{print $1}").Run()
