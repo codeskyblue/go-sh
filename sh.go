@@ -1,7 +1,6 @@
 package sh
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"os"
@@ -12,6 +11,7 @@ import (
 	"github.com/codegangsta/inject"
 )
 
+/*
 type Return struct {
 	Stdout string
 	Stderr string
@@ -29,6 +29,7 @@ func Capture(name string, a ...interface{}) (ret *Return, err error) {
 	s := NewSession()
 	return s.Capture(name, a...)
 }
+*/
 
 type Dir string
 
@@ -99,6 +100,7 @@ func (s *Session) Command(name string, a ...interface{}) *Session {
 	return s
 }
 
+// combine Command and Run
 func (s *Session) Call(name string, a ...interface{}) error {
 	return s.Command(name, a...).Run()
 }
@@ -109,6 +111,7 @@ func (s *Session) Exec(cmd string, args ...string) error {
 }
 */
 
+/*
 func (s *Session) Capture(name string, a ...interface{}) (ret *Return, err error) {
 	stdout := new(bytes.Buffer)
 	stderr := new(bytes.Buffer)
@@ -122,6 +125,7 @@ func (s *Session) Capture(name string, a ...interface{}) (ret *Return, err error
 	ret.Stderr = string(stderr.Bytes())
 	return
 }
+*/
 
 func (s *Session) SetEnv(key, value string) *Session {
 	s.Env[key] = value

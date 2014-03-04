@@ -6,14 +6,14 @@ import (
 )
 
 func TestAlias(t *testing.T) {
-	session := NewSession()
-	session.Alias("gr", "echo", "hi")
-	ret, err := session.Capture("gr", []string{"sky"})
+	s := NewSession()
+	s.Alias("gr", "echo", "hi")
+	out, err := s.Command("gr", "sky").Output()
 	if err != nil {
 		t.Error(err)
 	}
-	if ret.Trim() != "hi sky" {
-		t.Errorf("expect 'hi sky' but got:%s", ret)
+	if string(out) != "hi sky\n" {
+		t.Errorf("expect 'hi sky' but got:%s", string(out))
 	}
 }
 
@@ -25,6 +25,7 @@ func TestCommand1(t *testing.T) {
 	}
 }
 
+/*
 func TestCapture(t *testing.T) {
 	r, err := Capture("echo", []string{"hello"})
 	if err != nil {
@@ -35,6 +36,7 @@ func TestCapture(t *testing.T) {
 		t.Errorf("expect hello, but got %s", r.Trim())
 	}
 }
+*/
 
 func TestSession(t *testing.T) {
 	if runtime.GOOS == "windows" {
@@ -47,12 +49,12 @@ func TestSession(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	ret, err := session.SetDir("/").Capture("pwd")
+	out, err := session.SetDir("/").Command("pwd").Output()
 	if err != nil {
 		t.Error(err)
 	}
-	if ret.Trim() != "/" {
-		t.Errorf("expect /, but got %s", ret.Trim())
+	if string(out) != "/\n" {
+		t.Errorf("expect /, but got %s", string(out))
 	}
 }
 
