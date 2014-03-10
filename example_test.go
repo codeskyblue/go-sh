@@ -1,9 +1,18 @@
-package sh
+package sh_test
 
-import "testing"
+import (
+	"fmt"
 
-func TestExample2(t *testing.T) {
-	sh := NewSession()
-	sh.Call("echo", []string{"hello", "example"})
-	sh.Call("echo")
+	"github.com/shxsun/go-sh"
+)
+
+func ExampleCommand() {
+	out, err := sh.Command("echo", "hello").Run()
+	fmt.Println(string(out), err)
+}
+
+func ExampleTest() {
+	if sh.Test("dir", "mydir") {
+		fmt.Println("mydir exists")
+	}
 }

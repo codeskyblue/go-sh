@@ -1,3 +1,17 @@
+/*
+Package go-sh is intented to make shell call with golang more easily.
+Some usage is more similar to os/exec, eg: Run(), Output(), Command(name, args...)
+
+But with these similar function, pipe is added in and this package also got shell-session support.
+
+Why I love golang so much, because the usage of golang is simple, but the power is unlimited. I want to make this pakcage got the sample style like golang.
+
+	sh.Command("echo", "hello").Run() // just like os/exec
+	sh.Command("echo", "hello").Command("wc", "-c").Run() // support pipe
+	sh.NewSession().SetDir("/").Command("pwd") // create a session to store dir and env
+	sh.Test("dir", "mydir") // return bool, also got (file, dir, link)
+	sh.Command("pwd", sh.Dir("/")) // like shell call: (cd /; pwd)
+*/
 package sh
 
 import (
@@ -10,26 +24,6 @@ import (
 
 	"github.com/codegangsta/inject"
 )
-
-/*
-type Return struct {
-	Stdout string
-	Stderr string
-}
-
-func (r *Return) String() string {
-	return r.Stdout
-}
-
-func (r *Return) Trim() string {
-	return strings.TrimSpace(r.Stdout)
-}
-
-func Capture(name string, a ...interface{}) (ret *Return, err error) {
-	s := NewSession()
-	return s.Capture(name, a...)
-}
-*/
 
 type Dir string
 
@@ -108,22 +102,6 @@ func (s *Session) Call(name string, a ...interface{}) error {
 /*
 func (s *Session) Exec(cmd string, args ...string) error {
 	return s.Call(cmd, args)
-}
-*/
-
-/*
-func (s *Session) Capture(name string, a ...interface{}) (ret *Return, err error) {
-	stdout := new(bytes.Buffer)
-	stderr := new(bytes.Buffer)
-	oldout, olderr := s.Stdout, s.Stderr
-	s.Stdout, s.Stderr = stdout, stderr
-	err = s.Call(name, a...)
-	s.Stdout, s.Stderr = oldout, olderr
-
-	ret = new(Return)
-	ret.Stdout = string(stdout.Bytes())
-	ret.Stderr = string(stderr.Bytes())
-	return
 }
 */
 
