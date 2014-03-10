@@ -7,7 +7,17 @@ import (
 )
 
 func ExampleCommand() {
-	out, err := sh.Command("echo", "hello").Run()
+	out, err := sh.Command("echo", "hello").Output()
+	fmt.Println(string(out), err)
+}
+
+func ExampleCommand() {
+	out, err := sh.Command("echo", "-n", "hi").Command("wc", "-c").Output()
+	fmt.Println(string(out), err)
+}
+
+func ExampleCommand() {
+	out, err := sh.Command("pwd", sh.Dir("/")).Output()
 	fmt.Println(string(out), err)
 }
 

@@ -6,11 +6,24 @@ But with these similar function, pipe is added in and this package also got shel
 
 Why I love golang so much, because the usage of golang is simple, but the power is unlimited. I want to make this pakcage got the sample style like golang.
 
-	sh.Command("echo", "hello").Run() // just like os/exec
-	sh.Command("echo", "hello").Command("wc", "-c").Run() // support pipe
-	sh.NewSession().SetDir("/").Command("pwd") // create a session to store dir and env
-	sh.Test("dir", "mydir") // return bool, also got (file, dir, link)
-	sh.Command("pwd", sh.Dir("/")) // like shell call: (cd /; pwd)
+	// just like os/exec
+	sh.Command("echo", "hello").Run()
+
+	// support pipe
+	sh.Command("echo", "hello").Command("wc", "-c").Run()
+
+	// create a session to store dir and env
+	sh.NewSession().SetDir("/").Command("pwd")
+
+	// shell buildin command - "test"
+	sh.Test("dir", "mydir")
+
+	// like shell call: (cd /; pwd)
+	sh.Command("pwd", sh.Dir("/")) same with sh.Command(sh.Dir("/"), "pwd")
+
+	// output to json and xml easily
+	v := map[string] int {}
+	err = sh.Command("echo", `{"nunber": 1}`).UnmarshalJSON(&v)
 */
 package sh
 
