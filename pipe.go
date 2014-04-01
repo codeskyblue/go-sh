@@ -64,15 +64,16 @@ func (s *Session) Start() (err error) {
 }
 
 // Should be call after Start()
+// only catch the last command error
 func (s *Session) Wait() (err error) {
 	for _, cmd := range s.cmds {
-		cmd.Wait()
+		err = cmd.Wait()
 		wr, ok := cmd.Stdout.(*io.PipeWriter)
 		if ok {
 			wr.Close()
 		}
 	}
-	return
+	return err
 }
 
 func (s *Session) Run() (err error) {
