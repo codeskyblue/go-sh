@@ -11,12 +11,12 @@ func ExampleCommand() {
 	fmt.Println(string(out), err)
 }
 
-func ExampleCommand() {
+func ExampleCommandPipe() {
 	out, err := sh.Command("echo", "-n", "hi").Command("wc", "-c").Output()
 	fmt.Println(string(out), err)
 }
 
-func ExampleCommand() {
+func ExampleCommandSetDir() {
 	out, err := sh.Command("pwd", sh.Dir("/")).Output()
 	fmt.Println(string(out), err)
 }
