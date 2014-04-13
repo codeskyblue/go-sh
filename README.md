@@ -1,10 +1,10 @@
 ## go-sh
-[![Build Status](https://drone.io/github.com/shxsun/go-sh/status.png)](https://drone.io/github.com/shxsun/go-sh/latest)
-[![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/shxsun/go-sh)
+[![Build Status](https://drone.io/github.com/codeskyblue/go-sh/status.png)](https://drone.io/github.com/shxsun/go-sh/latest)
+[![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/codeskyblue/go-sh)
 
 *for the better grow of this package. some change may influence the old users, the old-code has tag: v0.1*
 
-install: `go get github.com/shxsun/go-sh`
+install: `go get github.com/codeskyblue/go-sh`
 
 I like os/exec, so this golang package go-sh, is very like os/exec. But it really have some better experience than os/exec.
 
