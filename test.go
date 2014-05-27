@@ -23,6 +23,9 @@ func (s *Session) pwd() string {
 }
 
 func (s *Session) abspath(name string) string {
+	if filepath.IsAbs(name) {
+		return name
+	}
 	return filepath.Join(s.pwd(), name)
 }
 
