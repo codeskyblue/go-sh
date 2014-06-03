@@ -34,6 +34,7 @@ import (
 	"os/exec"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/codegangsta/inject"
 )
@@ -50,6 +51,7 @@ type Session struct {
 	Stdout  io.Writer
 	Stderr  io.Writer
 	ShowCMD bool // enable for debug
+	timeout time.Duration
 }
 
 func (s *Session) writePrompt(args ...interface{}) {
@@ -125,6 +127,11 @@ func (s *Session) SetEnv(key, value string) *Session {
 
 func (s *Session) SetDir(dir string) *Session {
 	s.dir = Dir(dir)
+	return s
+}
+
+func (s *Session) SetTimeout(d time.Duration) *Session {
+	s.timeout = d
 	return s
 }
 

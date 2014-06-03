@@ -42,7 +42,7 @@ func TestTest(i *testing.T) {
 	t.checkTest("x", "testdata/hello.txt", false)
 }
 
-func ExampleTest(t *testing.T) {
+func ExampleShellTest(t *testing.T) {
 	// test -L
 	sh.Test("link", "testdata/linkfile")
 	sh.Test("L", "testdata/linkfile")

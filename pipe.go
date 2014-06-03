@@ -111,6 +111,9 @@ func (s *Session) Run() (err error) {
 	if err = s.Start(); err != nil {
 		return
 	}
+	if s.timeout != time.Duration(0) {
+		return s.WaitTimeout(s.timeout)
+	}
 	return s.Wait()
 }
 

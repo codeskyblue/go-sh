@@ -86,3 +86,12 @@ func TestTimeout(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestSetTimeout(t *testing.T) {
+	s.SetTimeout(time.Second)
+	defer s.SetTimeout(0)
+	err := s.Command("sleep", "2").Run()
+	if err != ErrExecTimeout {
+		t.Fatal(err)
+	}
+}
