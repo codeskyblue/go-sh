@@ -2,6 +2,8 @@ package sh
 
 import (
 	"testing"
+
+	"github.com/shxsun/go-sh"
 )
 
 var s = NewSession()
@@ -38,4 +40,19 @@ func TestTest(i *testing.T) {
 	t.checkTest("x", "testdata/executable", true)
 	t.checkTest("x", "testdata/xxxxx", false)
 	t.checkTest("x", "testdata/hello.txt", false)
+}
+
+func TestExample2(t *testing.T) {
+	// test -L
+	sh.Test("link", "testdata/linkfile")
+	sh.Test("L", "testdata/linkfile")
+	// test -f
+	sh.Test("file", "testdata/file")
+	sh.Test("f", "testdata/file")
+	// test -x
+	sh.Test("executable", "testdata/binfile")
+	sh.Test("x", "testdata/binfile")
+	// test -d
+	sh.Test("dir", "testdata/dir")
+	sh.Test("d", "testdata/dir")
 }

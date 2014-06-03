@@ -57,7 +57,7 @@ func (s *Session) Test(expression string, argument string) bool {
 	return false
 }
 
-// expression can be dir, file, link
+// expression can be d,dir, f,file, link
 func Test(exp string, arg string) bool {
 	s := NewSession()
 	return s.Test(exp, arg)

@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"testing"
+	"time"
 )
 
 func TestUnmarshalJSON(t *testing.T) {
@@ -73,4 +74,15 @@ func TestPipeCommand(t *testing.T) {
 		wc.Close()
 	}
 	c2.Wait()
+}
+
+func TestTimeout(t *testing.T) {
+	err := s.Command("sleep", "2").Start()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = s.WaitTimeout(time.Second)
+	if err != ErrExecTimeout {
+		t.Fatal(err)
+	}
 }

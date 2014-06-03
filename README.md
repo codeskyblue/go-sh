@@ -15,6 +15,7 @@ There are some features, listed bellow.
 * remember current dir
 * pipe command
 * shell build-in command test
+* timeout support
 
 Example is always important. I will show you how to use it.
 
@@ -38,6 +39,9 @@ Example is always important. I will show you how to use it.
 
 	sh: msg=$(echo hi)
 	go: msg, err := sh.Command("echo", "hi").Output()
+
+	sh(in ubuntu): timeout 1s sleep 3
+	go: c := sh.Command("sleep", "3"); c.Start(); c.WaitTimeout(time.Seocnd) # default SIGKILL
 
 If you need to keep env and dir, it is better to create a session
 

@@ -4,10 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
+	"errors"
 	"io"
 	"os"
 	"strings"
+	"syscall"
+	"time"
 )
+
+var ErrExecTimeout = errors.New("execute timeout")
 
 // unmarshal shell output to decode json
 func (s *Session) UnmarshalJSON(data interface{}) (err error) {
@@ -74,6 +79,32 @@ func (s *Session) Wait() (err error) {
 		}
 	}
 	return err
+}
+
+func (s *Session) Kill(sig os.Signal) {
+	for _, cmd := range s.cmds {
+		if cmd.Process != nil {
+			cmd.Process.Signal(sig)
+		}
+	}
+}
+
+func (s *Session) WaitTimeout(timeout time.Duration) (err error) {
+	select {
+	case <-time.After(timeout):
+		s.Kill(syscall.SIGKILL)
+		return ErrExecTimeout
+	case err = <-Go(s.Wait):
+		return err
+	}
+}
+
+func Go(f func() error) chan error {
+	ch := make(chan error)
+	go func() {
+		ch <- f()
+	}()
+	return ch
 }
 
 func (s *Session) Run() (err error) {
