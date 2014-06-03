@@ -1,5 +1,5 @@
 ## go-sh
-[![Build Status](https://drone.io/github.com/codeskyblue/go-sh/status.png)](https://drone.io/github.com/shxsun/go-sh/latest)
+[![wercker status](https://app.wercker.com/status/009acbd4f00ccc6de7e2554e12a50d84/s "wercker status")](https://app.wercker.com/project/bykey/009acbd4f00ccc6de7e2554e12a50d84)
 [![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/codeskyblue/go-sh)
 
 *for the better grow of this package. some change may influence the old users, the old-code has tag: v0.1*
