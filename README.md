@@ -6,6 +6,16 @@
 
 install: `go get github.com/codeskyblue/go-sh`
 
+Pipe Example:
+
+	package main
+
+	import "github.com/codeskyblue/go-sh"
+
+	func main() {
+		sh.Command("echo", "hello\tworld").Command("cut", "-f2").Run()
+	}
+
 I like os/exec, so this golang package go-sh, is very like os/exec. But it really have some better experience than os/exec.
 
 There are some features, listed bellow.
