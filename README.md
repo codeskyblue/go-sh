@@ -52,6 +52,7 @@ Example is always important. I will show you how to use it.
 
 	sh(in ubuntu): timeout 1s sleep 3
 	go: c := sh.Command("sleep", "3"); c.Start(); c.WaitTimeout(time.Seocnd) # default SIGKILL
+	go: out, err := sh.Command("sleep", "3").SetTimeout(time.Second).Output() # set session timeout and get output)
 
 If you need to keep env and dir, it is better to create a session
 

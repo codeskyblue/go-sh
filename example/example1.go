@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/shxsun/go-sh"
+	"github.com/codeskyblue/go-sh"
 )
 
 func main() {
