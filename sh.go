@@ -23,7 +23,7 @@ Why I love golang so much, because the usage of golang is simple, but the power 
 
 	// output to json and xml easily
 	v := map[string] int {}
-	err = sh.Command("echo", `{"nunber": 1}`).UnmarshalJSON(&v)
+	err = sh.Command("echo", `{"number": 1}`).UnmarshalJSON(&v)
 */
 package sh
 
