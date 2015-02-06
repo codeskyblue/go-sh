@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"testing"
 	"time"
+	"strings"
 )
 
 func TestUnmarshalJSON(t *testing.T) {
@@ -93,5 +94,16 @@ func TestSetTimeout(t *testing.T) {
 	err := s.Command("sleep", "2").Run()
 	if err != ErrExecTimeout {
 		t.Fatal(err)
+	}
+}
+
+func TestCombinedOutput(t *testing.T) {
+	bytes, err := s.Command("sh", "-c", "echo stderr >&2 ; echo stdout").CombinedOutput()
+	if err != nil {
+		t.Error(err)
+	}
+	stringOutput := string(bytes)
+	if ! (strings.Contains(stringOutput, "stdout") && strings.Contains(stringOutput, "stderr")) {
+		t.Errorf("expect output from both output streams, got '%s'", strings.TrimSpace(stringOutput))
 	}
 }

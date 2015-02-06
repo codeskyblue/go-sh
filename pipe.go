@@ -128,3 +128,19 @@ func (s *Session) Output() (out []byte, err error) {
 	out = stdout.Bytes()
 	return
 }
+
+func (s *Session) CombinedOutput() (out []byte, err error) {
+	oldout := s.Stdout
+	olderr := s.Stderr
+	defer func() {
+		s.Stdout = oldout
+		s.Stderr = olderr
+	}()
+	stdout := bytes.NewBuffer(nil)
+	s.Stdout = stdout
+	s.Stderr = stdout
+
+	err = s.Run()
+	out = stdout.Bytes()
+	return
+}
