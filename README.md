@@ -54,6 +54,12 @@ Example is always important. I will show you how to use it.
 	go: c := sh.Command("sleep", "3"); c.Start(); c.WaitTimeout(time.Seocnd) # default SIGKILL
 	go: out, err := sh.Command("sleep", "3").SetTimeout(time.Second).Output() # set session timeout and get output)
 
+	sh: echo hello | cat
+	go: out, err := sh.Command("cat").SetInput("hello").Output()
+
+	sh: cat # read from stdin
+	go: out, err := sh.Command("cat").SetStdin(os.Stdin).Output()
+
 If you need to keep env and dir, it is better to create a session
 
 	session := sh.NewSession()
