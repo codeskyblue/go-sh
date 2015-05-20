@@ -48,6 +48,7 @@ type Session struct {
 	dir     Dir
 	started bool
 	Env     map[string]string
+	Stdin   io.Reader
 	Stdout  io.Writer
 	Stderr  io.Writer
 	ShowCMD bool // enable for debug
@@ -69,6 +70,7 @@ func NewSession() *Session {
 		inj:    inject.New(),
 		alias:  make(map[string][]string),
 		dir:    Dir(""),
+		Stdin:  strings.NewReader(""),
 		Stdout: os.Stdout,
 		Stderr: os.Stderr,
 		Env:    env,
@@ -79,6 +81,11 @@ func NewSession() *Session {
 func Command(name string, a ...interface{}) *Session {
 	s := NewSession()
 	return s.Command(name, a...)
+}
+
+func Echo(in string) *Session {
+	s := NewSession()
+	return s.SetInput(in)
 }
 
 func (s *Session) Alias(alias, cmd string, args ...string) {
@@ -127,6 +134,16 @@ func (s *Session) SetEnv(key, value string) *Session {
 
 func (s *Session) SetDir(dir string) *Session {
 	s.dir = Dir(dir)
+	return s
+}
+
+func (s *Session) SetInput(in string) *Session {
+	s.Stdin = strings.NewReader(in)
+	return s
+}
+
+func (s *Session) SetStdin(r io.Reader) *Session {
+	s.Stdin = r
 	return s
 }
 

@@ -5,9 +5,9 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 	"testing"
 	"time"
-	"strings"
 )
 
 func TestUnmarshalJSON(t *testing.T) {
@@ -77,6 +77,19 @@ func TestPipeCommand(t *testing.T) {
 	c2.Wait()
 }
 
+func TestPipeInput(t *testing.T) {
+	s := NewSession()
+	s.ShowCMD = true
+	s.SetInput("first line\nsecond line\n")
+	out, err := s.Command("grep", "second").Output()
+	if err != nil {
+		t.Error(err)
+	}
+	if string(out) != "second line\n" {
+		t.Error("capture wrong output:", out)
+	}
+}
+
 func TestTimeout(t *testing.T) {
 	err := s.Command("sleep", "2").Start()
 	if err != nil {
@@ -103,7 +116,7 @@ func TestCombinedOutput(t *testing.T) {
 		t.Error(err)
 	}
 	stringOutput := string(bytes)
-	if ! (strings.Contains(stringOutput, "stdout") && strings.Contains(stringOutput, "stderr")) {
+	if !(strings.Contains(stringOutput, "stdout") && strings.Contains(stringOutput, "stderr")) {
 		t.Errorf("expect output from both output streams, got '%s'", strings.TrimSpace(stringOutput))
 	}
 }

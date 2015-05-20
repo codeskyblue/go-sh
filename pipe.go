@@ -48,7 +48,9 @@ func (s *Session) Start() (err error) {
 		s.writePrompt(strings.Join(cmds, " | "))
 	}
 	for index, cmd := range s.cmds {
-		if index != 0 {
+		if index == 0 {
+			cmd.Stdin = s.Stdin
+		} else {
 			cmd.Stdin = rd
 		}
 		if index != length {
