@@ -1,12 +1,12 @@
-package sh
+package sh_test
 
 import (
 	"testing"
 
-	"github.com/shxsun/go-sh"
+	"github.com/codeskyblue/go-sh"
 )
 
-var s = NewSession()
+var s = sh.NewSession()
 
 type T struct{ *testing.T }
 

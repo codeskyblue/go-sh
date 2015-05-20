@@ -5,9 +5,9 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 	"testing"
 	"time"
-	"strings"
 )
 
 func TestUnmarshalJSON(t *testing.T) {
@@ -24,6 +24,7 @@ func TestUnmarshalJSON(t *testing.T) {
 }
 
 func TestUnmarshalXML(t *testing.T) {
+	s := NewSession()
 	xmlSample := `<?xml version="1.0" encoding="utf-8"?>
 <server version="1" />`
 	type server struct {
@@ -78,6 +79,7 @@ func TestPipeCommand(t *testing.T) {
 }
 
 func TestTimeout(t *testing.T) {
+	s := NewSession()
 	err := s.Command("sleep", "2").Start()
 	if err != nil {
 		t.Fatal(err)
@@ -89,6 +91,7 @@ func TestTimeout(t *testing.T) {
 }
 
 func TestSetTimeout(t *testing.T) {
+	s := NewSession()
 	s.SetTimeout(time.Second)
 	defer s.SetTimeout(0)
 	err := s.Command("sleep", "2").Run()
@@ -98,12 +101,13 @@ func TestSetTimeout(t *testing.T) {
 }
 
 func TestCombinedOutput(t *testing.T) {
+	s := NewSession()
 	bytes, err := s.Command("sh", "-c", "echo stderr >&2 ; echo stdout").CombinedOutput()
 	if err != nil {
 		t.Error(err)
 	}
 	stringOutput := string(bytes)
-	if ! (strings.Contains(stringOutput, "stdout") && strings.Contains(stringOutput, "stderr")) {
+	if !(strings.Contains(stringOutput, "stdout") && strings.Contains(stringOutput, "stderr")) {
 		t.Errorf("expect output from both output streams, got '%s'", strings.TrimSpace(stringOutput))
 	}
 }
