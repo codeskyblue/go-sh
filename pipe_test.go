@@ -78,6 +78,19 @@ func TestPipeCommand(t *testing.T) {
 	c2.Wait()
 }
 
+func TestPipeInput(t *testing.T) {
+	s := NewSession()
+	s.ShowCMD = true
+	s.SetInput("first line\nsecond line\n")
+	out, err := s.Command("grep", "second").Output()
+	if err != nil {
+		t.Error(err)
+	}
+	if string(out) != "second line\n" {
+		t.Error("capture wrong output:", out)
+	}
+}
+
 func TestTimeout(t *testing.T) {
 	s := NewSession()
 	err := s.Command("sleep", "2").Start()

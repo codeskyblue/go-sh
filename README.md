@@ -24,7 +24,7 @@ There are some features, listed bellow.
 * alias support (like alias in shell)
 * remember current dir
 * pipe command
-* shell build-in command test
+* shell build-in commands echo & test
 * timeout support
 
 Example is always important. I will show you how to use it.
@@ -43,12 +43,12 @@ Example is always important. I will show you how to use it.
 
 	sh: test -d data || mkdir data
 	go: if ! sh.Test("dir", "data") { sh.Command("mkdir", "data").Run() }
-	
-	sh: echo hello world | awk '{print $1}'
-	go: sh.Command("echo", "hello", "world").Command("awk", "{print $1}").Run()
 
-	sh: msg=$(echo hi)
-	go: msg, err := sh.Command("echo", "hi").Output()
+	sh: cat first second | awk '{print $1}'
+	go: sh.Command("cat", "first", "second").Command("awk", "{print $1}").Run()
+
+	sh: count=$(echo "one two three" | wc -w)
+	go: count, err := sh.Echo("one two three").Command("wc", "-w").Output()
 
 	sh(in ubuntu): timeout 1s sleep 3
 	go: c := sh.Command("sleep", "3"); c.Start(); c.WaitTimeout(time.Seocnd) # default SIGKILL

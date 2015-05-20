@@ -2,6 +2,7 @@ package sh
 
 import (
 	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -22,6 +23,16 @@ func TestCommand1(t *testing.T) {
 	err = Command("echo", "hello123").Run()
 	if err != nil {
 		t.Error(err)
+	}
+}
+
+func TestEcho(t *testing.T) {
+	out, err := Echo("one two three").Command("wc", "-w").Output()
+	if err != nil {
+		t.Error(err)
+	}
+	if strings.TrimSpace(string(out)) != "3" {
+		t.Errorf("expect '3' but got:%s", string(out))
 	}
 }
 
