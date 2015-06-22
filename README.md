@@ -68,7 +68,7 @@ If you need to keep env and dir, it is better to create a session
 	# then call cmd
 	session.Command("echo", "hello").Run()
 	# set ShowCMD to true for easily debug
-	session.ShowCmd = true
+	session.ShowCMD = true
 
 for more information, it better to see docs.
 [![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/shxsun/go-sh)
