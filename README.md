@@ -1,8 +1,7 @@
-## go-sh
 [![wercker status](https://app.wercker.com/status/009acbd4f00ccc6de7e2554e12a50d84/s "wercker status")](https://app.wercker.com/project/bykey/009acbd4f00ccc6de7e2554e12a50d84)
 [![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/codeskyblue/go-sh)
 
-*for the better grow of this package. some change may influence the old users, the old-code has tag: v0.1*
+*If you depend on the old api, see tag: v.0.1*
 
 install: `go get github.com/codeskyblue/go-sh`
 
@@ -16,18 +15,18 @@ Pipe Example:
 		sh.Command("echo", "hello\tworld").Command("cut", "-f2").Run()
 	}
 
-I like os/exec, so this golang package go-sh, is very like os/exec. But it really have some better experience than os/exec.
+Because I like os/exec, `go-sh` is very much modelled after it. However, `go-sh` provides a better experience.
 
-There are some features, listed bellow.
+These are some of its features:
 
-* keep the variable environment (like export)
-* alias support (like alias in shell)
+* keep the variable environment (e.g. export)
+* alias support (e.g. alias in shell)
 * remember current dir
 * pipe command
 * shell build-in commands echo & test
 * timeout support
 
-Example is always important. I will show you how to use it.
+Examples are important:
 
 	sh: echo hello
 	go: sh.Command("echo", "hello").Run()
@@ -71,15 +70,15 @@ If you need to keep env and dir, it is better to create a session
 	session.ShowCMD = true
 
 for more information, it better to see docs.
-[![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/shxsun/go-sh)
+[![Go Walker](http://gowalker.org/api/v1/badge)](http://gowalker.org/github.com/codeskyblue/go-sh)
 
 ### contribute
-If you love this project, star it which will encourage the coder. pull requests are welcomed, if you want to add some new fetures.
+If you love this project, starring it will encourage the coder. Pull requests are welcome.
 
 support the author: [alipay](https://me.alipay.com/goskyblue)
 
 ### thanks
 this project is based on <http://github.com/codegangsta/inject>. thanks for the author.
 
-# the reason to use golang shell
-So what is go-sh. Sometimes we need to write some shell scripts, but shell scripts is not good at cross platform, but golang is good at that. Is there a good way to use golang to write scripts like shell? Use go-sh we can do it now.
+# the reason to use Go shell
+Sometimes we need to write shell scripts, but shell scripts are not good at working cross platform,  Go, on the other hand, is good at that. Is there a good way to use Go to write shell like scripts? Using go-sh we can do this now.
