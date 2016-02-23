@@ -51,7 +51,7 @@ Examples are important:
 	go: count, err := sh.Echo("one two three").Command("wc", "-w").Output()
 
 	sh(in ubuntu): timeout 1s sleep 3
-	go: c := sh.Command("sleep", "3"); c.Start(); c.WaitTimeout(time.Seocnd) # default SIGKILL
+	go: c := sh.Command("sleep", "3"); c.Start(); c.WaitTimeout(time.Second) # default SIGKILL
 	go: out, err := sh.Command("sleep", "3").SetTimeout(time.Second).Output() # set session timeout and get output)
 
 	sh: echo hello | cat
