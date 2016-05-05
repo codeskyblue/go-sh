@@ -30,12 +30,25 @@ func ExampleSession_Command() {
 	// Output: hello
 }
 
-func TestCommand1(t *testing.T) {
-	var err error
-	err = Command("echo", "hello123").Run()
+func ExampleSession_Command_pipe() {
+	s := NewSession()
+	out, err := s.Command("echo", "hello", "world").Command("awk", "{print $2}").Output()
 	if err != nil {
-		t.Error(err)
+		log.Fatal(err)
 	}
+	fmt.Println(string(out))
+	// Output: world
+}
+
+func ExampleSession_Alias() {
+	s := NewSession()
+	s.Alias("alias_echo_hello", "echo", "hello")
+	out, err := s.Command("alias_echo_hello", "world").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(out))
+	// Output: hello world
 }
 
 func TestEcho(t *testing.T) {
@@ -47,19 +60,6 @@ func TestEcho(t *testing.T) {
 		t.Errorf("expect '3' but got:%s", string(out))
 	}
 }
-
-/*
-func TestCapture(t *testing.T) {
-	r, err := Capture("echo", []string{"hello"})
-	if err != nil {
-		t.Error(err)
-	}
-	_ = r
-	if r.Trim() != "hello" {
-		t.Errorf("expect hello, but got %s", r.Trim())
-	}
-}
-*/
 
 func TestSession(t *testing.T) {
 	if runtime.GOOS == "windows" {
@@ -92,13 +92,13 @@ func TestSession(t *testing.T) {
 		ll local | awk '{print $1, $NF}' | grep bin
 	fi
 */
-func TestExample(t *testing.T) {
+func Example(t *testing.T) {
 	s := NewSession()
-	s.ShowCMD = true
+	//s.ShowCMD = true
 	s.Env["PATH"] = "/usr/bin:/bin"
-	s.SetDir("/usr")
+	s.SetDir("/bin")
 	s.Alias("ll", "ls", "-l")
-	//s.Stdout = nil
+
 	if s.Test("d", "local") {
 		//s.Command("ll", []string{"local"}).Command("awk", []string{"{print $1, $NF}"}).Command("grep", []string{"bin"}).Run()
 		s.Command("ll", "local").Command("awk", "{print $1, $NF}").Command("grep", "bin").Run()
