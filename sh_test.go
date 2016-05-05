@@ -1,6 +1,8 @@
 package sh
 
 import (
+	"fmt"
+	"log"
 	"runtime"
 	"strings"
 	"testing"
@@ -16,6 +18,16 @@ func TestAlias(t *testing.T) {
 	if string(out) != "hi sky\n" {
 		t.Errorf("expect 'hi sky' but got:%s", string(out))
 	}
+}
+
+func ExampleSession_Command() {
+	s := NewSession()
+	out, err := s.Command("echo", "hello").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(out))
+	// Output: hello
 }
 
 func TestCommand1(t *testing.T) {
