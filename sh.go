@@ -78,6 +78,12 @@ func NewSession() *Session {
 	return s
 }
 
+func InteractiveSession() *Session {
+	s := NewSession()
+	s.SetStdin(os.Stdin)
+	return s
+}
+
 func Command(name string, a ...interface{}) *Session {
 	s := NewSession()
 	return s.Command(name, a...)
