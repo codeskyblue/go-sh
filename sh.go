@@ -153,6 +153,16 @@ func (s *Session) SetStdin(r io.Reader) *Session {
 	return s
 }
 
+func (s *Session) SetStdout(out io.Writer) *Session {
+	s.Stdout = out
+	return s
+}
+
+func (s *Session) SetStderr(err io.Writer) *Session {
+	s.Stderr = err
+	return s
+}
+
 func (s *Session) SetTimeout(d time.Duration) *Session {
 	s.timeout = d
 	return s
