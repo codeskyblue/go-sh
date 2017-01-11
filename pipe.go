@@ -131,6 +131,21 @@ func (s *Session) Output() (out []byte, err error) {
 	return
 }
 
+func (s *Session) WriteStdout(f string) error {
+	oldout := s.Stdout
+	defer func() {
+		s.Stdout = oldout
+	}()
+
+	out, err := os.Create(f)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	s.Stdout = out
+	return s.Run()
+}
+
 func (s *Session) CombinedOutput() (out []byte, err error) {
 	oldout := s.Stdout
 	olderr := s.Stderr
