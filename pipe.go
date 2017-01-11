@@ -131,7 +131,7 @@ func (s *Session) Output() (out []byte, err error) {
 	return
 }
 
-func (s *Session) WriteOutput(f string) error {
+func (s *Session) WriteStdout(f string) error {
 	oldout := s.Stdout
 	defer func() {
 		s.Stdout = oldout
