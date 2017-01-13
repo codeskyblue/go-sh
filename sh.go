@@ -58,7 +58,7 @@ type Session struct {
 func (s *Session) writePrompt(args ...interface{}) {
 	var ps1 = fmt.Sprintf("[golang-sh]$")
 	args = append([]interface{}{ps1}, args...)
-	fmt.Fprintln(s.Stderr, args...)
+	fmt.Fprintln(s.Stdout, args...)
 }
 
 func NewSession() *Session {
