@@ -124,3 +124,14 @@ func TestCombinedOutput(t *testing.T) {
 		t.Errorf("expect output from both output streams, got '%s'", strings.TrimSpace(stringOutput))
 	}
 }
+
+func TestPipeFail(t *testing.T) {
+	sh := NewSession()
+	sh.PipeFail = true
+	sh.PipeStdErrors = true
+	sh.Command("cat", "unknown-file")
+	sh.Command("echo")
+	if _, err := sh.Output(); err == nil {
+		t.Error("expected error")
+	}
+}
