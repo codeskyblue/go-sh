@@ -3,7 +3,7 @@ package sh_test
 import (
 	"testing"
 
-	"github.com/codeskyblue/go-sh"
+	"github.com/checkr/go-sh"
 )
 
 var s = sh.NewSession()

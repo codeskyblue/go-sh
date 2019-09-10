@@ -28,7 +28,6 @@ Why I love golang so much, because the usage of golang is simple, but the power 
 package sh
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -37,21 +36,25 @@ import (
 	"time"
 
 	"github.com/codegangsta/inject"
+	"github.com/fatih/color"
 )
 
 type Dir string
 
 type Session struct {
-	inj     inject.Injector
+	Env         map[string]string
+	ShowCMD     bool // enable for debug
+	Stderr      io.Writer
+	Stdin       io.Reader
+	Stdout      io.Writer
+	PromptColor color.Attribute
+	PromptTitle string
+
 	alias   map[string][]string
 	cmds    []*exec.Cmd
 	dir     Dir
+	inj     inject.Injector
 	started bool
-	Env     map[string]string
-	Stdin   io.Reader
-	Stdout  io.Writer
-	Stderr  io.Writer
-	ShowCMD bool // enable for debug
 	timeout time.Duration
 
 	// additional pipe options
@@ -60,9 +63,8 @@ type Session struct {
 }
 
 func (s *Session) writePrompt(args ...interface{}) {
-	var ps1 = fmt.Sprintf("[golang-sh]$")
-	args = append([]interface{}{ps1}, args...)
-	fmt.Fprintln(s.Stderr, args...)
+	args = append([]interface{}{s.PromptTitle}, args...)
+	color.New(s.PromptColor).Fprintln(s.Stderr, args...)
 }
 
 func NewSession() *Session {
@@ -71,13 +73,16 @@ func NewSession() *Session {
 		env[key] = os.Getenv(key)
 	}
 	s := &Session{
-		inj:    inject.New(),
-		alias:  make(map[string][]string),
-		dir:    Dir(""),
-		Stdin:  strings.NewReader(""),
-		Stdout: os.Stdout,
-		Stderr: os.Stderr,
-		Env:    env,
+		Env:         env,
+		Stderr:      os.Stderr,
+		Stdin:       strings.NewReader(""),
+		Stdout:      os.Stdout,
+		PromptColor: color.FgWhite,
+		PromptTitle: "[golang-sh]$",
+
+		alias: make(map[string][]string),
+		dir:   Dir(""),
+		inj:   inject.New(),
 	}
 	return s
 }
