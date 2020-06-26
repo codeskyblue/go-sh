@@ -156,6 +156,21 @@ func (s *Session) WriteStdout(f string) error {
 	return s.Run()
 }
 
+func (s *Session) AppendStdout(f string) error {
+	oldout := s.Stdout
+	defer func() {
+		s.Stdout = oldout
+	}()
+
+	out, err := os.OpenFile(f, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	s.Stdout = out
+	return s.Run()
+}
+
 func (s *Session) CombinedOutput() (out []byte, err error) {
 	oldout := s.Stdout
 	olderr := s.Stderr
